@@ -7,7 +7,7 @@ load_dotenv()
 #print(os.getenv("OPENAI_API_KEY"))
 from langchain_core.messages import HumanMessage
 from langchain_mcp_adapters.tools import load_mcp_tools
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langgraph.prebuilt import create_react_agent
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -19,12 +19,11 @@ StdioServerParameters: Pydantic class which has fields of commands and args, whi
 stdio_client: client communicate with MCP server through transport of input and output. Read from standard in, and write to standard out.
 """
 
-llm = ChatOpenAI()
-
+llm = ChatOllama(model="gemma3:4b", temperature=0.1,base_url="http://192.168.208.12:11434")
 # initialize variables and give info of how to run MCP server
 stdio_server_params = StdioServerParameters(
     command="python",
-    args=["/Users/junfanzhu/Desktop/MCP-AI-Infra-Real-Time-Agent/servers/math_server.py"],
+    args=["servers/math_server.py"],
 )
 
 async def main():
